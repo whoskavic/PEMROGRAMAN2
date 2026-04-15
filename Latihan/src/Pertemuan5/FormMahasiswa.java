@@ -1,4 +1,4 @@
-package pertemuan5;
+package Pertemuan5;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
