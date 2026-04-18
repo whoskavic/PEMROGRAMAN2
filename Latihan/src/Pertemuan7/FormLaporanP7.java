@@ -66,8 +66,9 @@ public class FormLaporanP7 extends JFrame {
         btnCetak.setEnabled(false);
 
         // Lokasi file .jrxml
-        // dirr = absolute path FOLDER paling atas. contoh punya gua ada di: Latihan, jadi :
-        // Latihan/src/laporan/LaporanMahasiswa.jrxml
+        // dirr = absolute path FOLDER paling atas. contoh punya gua ada di: C:/PEMROGRAMAN2/Latihan
+        // jadi :
+        // C:/PEMROGRAMAN2/Latihan/src/laporan/LaporanMahasiswa.jrxml
         // ini bebas kalau mau beda, disesuain aja
         File dir1   = new File(".");
         String dirr = dir1.getAbsolutePath();
