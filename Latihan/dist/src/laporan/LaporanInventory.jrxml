@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport
+    xmlns="http://jasperreports.sourceforge.net/jasperreports"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+        http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+    name="LaporanInventory"
+    pageWidth="842" pageHeight="595" orientation="Landscape"
+    columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+
+    <parameter name="judul" class="java.lang.String">
+        <defaultValueExpression><![CDATA["Laporan Inventory Barang"]]></defaultValueExpression>
+    </parameter>
+
+    <queryString>
+        <![CDATA[
+            SELECT b.kode_barang, b.nama_barang, s.nama_supplier,
+                   b.harga_beli, b.harga_jual, b.stok,
+                   CASE WHEN b.stok <= 5 THEN 'KRITIS'
+                        WHEN b.stok <= 10 THEN 'Menipis'
+                        ELSE 'Normal' END AS status
+            FROM barang b
+            LEFT JOIN supplier s ON b.id_supplier = s.id_supplier
+            ORDER BY b.stok ASC
+        ]]>
+    </queryString>
+
+    <field name="kode_barang"   class="java.lang.String"/>
+    <field name="nama_barang"   class="java.lang.String"/>
+    <field name="nama_supplier" class="java.lang.String"/>
+    <field name="harga_beli"    class="java.lang.Double"/>
+    <field name="harga_jual"    class="java.lang.Double"/>
+    <field name="stok"          class="java.lang.Integer"/>
+    <field name="status"        class="java.lang.String"/>
+
+    <title>
+        <band height="55">
+            <staticText>
+                <reportElement x="0" y="0" width="782" height="30"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="16" isBold="true"/>
+                </textElement>
+                <text><![CDATA[LAPORAN INVENTORY BARANG]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="30" width="782" height="18"/>
+                <textElement textAlignment="Center">
+                    <font fontName="Arial" size="10"/>
+                </textElement>
+                <text><![CDATA[M. Fikri Avishena Parinduri - NIM: 231011401029]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="25">
+            <rectangle>
+                <reportElement x="0" y="0" width="782" height="25" backcolor="#91BEC9" forecolor="#91BEC9"/>
+                <graphicElement><pen lineWidth="0.0"/></graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="0"   y="0" width="90"  height="25" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[  Kode]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="90"  y="0" width="200" height="25" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[  Nama Barang]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="290" y="0" width="160" height="25" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[  Supplier]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="450" y="0" width="110" height="25" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[Harga Beli  ]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="560" y="0" width="110" height="25" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[Harga Jual  ]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="670" y="0" width="50"  height="25" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[Stok]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="720" y="0" width="62"  height="25" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[Status]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="20">
+            <line>
+                <reportElement x="0" y="19" width="782" height="1" forecolor="#CCCCCC"/>
+            </line>
+            <textField>
+                <reportElement x="0"   y="0" width="90"  height="20"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA["  " + $F{kode_barang}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="90"  y="0" width="200" height="20"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA["  " + $F{nama_barang}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="290" y="0" width="160" height="20"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA["  " + ($F{nama_supplier} != null ? $F{nama_supplier} : "-")]]></textFieldExpression>
+            </textField>
+            <textField pattern="Rp #,##0">
+                <reportElement x="450" y="0" width="110" height="20"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{harga_beli}]]></textFieldExpression>
+            </textField>
+            <textField pattern="Rp #,##0">
+                <reportElement x="560" y="0" width="110" height="20"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{harga_jual}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="670" y="0" width="50"  height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{stok}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="720" y="0" width="62"  height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <pageFooter>
+        <band height="18">
+            <textField>
+                <reportElement x="0" y="0" width="782" height="18"/>
+                <textElement textAlignment="Right"><font fontName="Arial" size="8"/></textElement>
+                <textFieldExpression><![CDATA["Halaman " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+</jasperReport>

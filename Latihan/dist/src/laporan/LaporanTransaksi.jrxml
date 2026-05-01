@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport
+    xmlns="http://jasperreports.sourceforge.net/jasperreports"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+        http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+    name="LaporanTransaksi"
+    pageWidth="842" pageHeight="595" orientation="Landscape"
+    columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+
+    <parameter name="judul" class="java.lang.String">
+        <defaultValueExpression><![CDATA["Laporan Transaksi Penjualan"]]></defaultValueExpression>
+    </parameter>
+
+    <queryString>
+        <![CDATA[
+            SELECT t.no_transaksi, t.tanggal, c.nama_customer, b.nama_barang,
+                   t.jumlah, t.total_harga
+            FROM transaksi t
+            LEFT JOIN customer c ON t.id_customer = c.id_customer
+            LEFT JOIN barang b   ON t.kode_barang  = b.kode_barang
+            ORDER BY t.tanggal DESC
+        ]]>
+    </queryString>
+
+    <field name="no_transaksi"  class="java.lang.String"/>
+    <field name="tanggal"       class="java.lang.String"/>
+    <field name="nama_customer" class="java.lang.String"/>
+    <field name="nama_barang"   class="java.lang.String"/>
+    <field name="jumlah"        class="java.lang.Integer"/>
+    <field name="total_harga"   class="java.lang.Double"/>
+
+    <variable name="grand_total" class="java.lang.Double" calculation="Sum">
+        <variableExpression><![CDATA[$F{total_harga}]]></variableExpression>
+    </variable>
+
+    <title>
+        <band height="55">
+            <staticText>
+                <reportElement x="0" y="0" width="782" height="30"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="16" isBold="true"/>
+                </textElement>
+                <text><![CDATA[LAPORAN TRANSAKSI PENJUALAN]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="30" width="782" height="18"/>
+                <textElement textAlignment="Center">
+                    <font fontName="Arial" size="10"/>
+                </textElement>
+                <text><![CDATA[M. Fikri Avishena Parinduri - NIM: 231011401029]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="25">
+            <rectangle>
+                <reportElement x="0" y="0" width="782" height="25" backcolor="#91BEC9" forecolor="#91BEC9"/>
+                <graphicElement><pen lineWidth="0.0"/></graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="0"   y="0" width="110" height="25" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[  No. Transaksi]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="110" y="0" width="90"  height="25" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[  Tanggal]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="200" y="0" width="170" height="25" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[  Customer]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="370" y="0" width="200" height="25" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[  Barang]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="570" y="0" width="60"  height="25" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[Jumlah]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="630" y="0" width="152" height="25" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement>
+                <text><![CDATA[Total Harga  ]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="20">
+            <line>
+                <reportElement x="0" y="19" width="782" height="1" forecolor="#CCCCCC"/>
+            </line>
+            <textField>
+                <reportElement x="0"   y="0" width="110" height="20"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA["  " + $F{no_transaksi}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="110" y="0" width="90"  height="20"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA["  " + $F{tanggal}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="200" y="0" width="170" height="20"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA["  " + ($F{nama_customer} != null ? $F{nama_customer} : "-")]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="370" y="0" width="200" height="20"/>
+                <textElement verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA["  " + ($F{nama_barang} != null ? $F{nama_barang} : "-")]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="570" y="0" width="60"  height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
+            </textField>
+            <textField pattern="Rp #,##0">
+                <reportElement x="630" y="0" width="152" height="20"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{total_harga}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+
+    <pageFooter>
+        <band height="18">
+            <textField>
+                <reportElement x="0" y="0" width="782" height="18"/>
+                <textElement textAlignment="Right"><font fontName="Arial" size="8"/></textElement>
+                <textFieldExpression><![CDATA["Halaman " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+    
+    <summary>
+        <band height="30">
+            <rectangle>
+                <reportElement x="0" y="0" width="782" height="30" backcolor="#D2EBF0" forecolor="#D2EBF0"/>
+                <graphicElement><pen lineWidth="0.0"/></graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="0" y="0" width="630" height="30"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="Arial" size="11" isBold="true"/>
+                </textElement>
+                <text><![CDATA[GRAND TOTAL : ]]></text>
+            </staticText>
+            <textField pattern="Rp #,##0">
+                <reportElement x="630" y="0" width="152" height="30"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="Arial" size="11" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{grand_total}]]></textFieldExpression>
+            </textField>
+        </band>
+    </summary>
+</jasperReport>
